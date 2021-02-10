@@ -1,5 +1,5 @@
-name: TestPlugin
-main: io.github.sol9109.testplugin.TestPlugin
+name: PlayerStats
+main: io.github.sol9109.playerstats.PlayerStats
 version: {$VersionNumber}
 author: Sol9109
 commands:

@@ -1,4 +1,4 @@
-package io.github.sol9109.testplugin;
+package io.github.sol9109.playerstats;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,10 +6,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class TestPlugin extends JavaPlugin{
+public final class PlayerStats extends JavaPlugin{
 
 	// Listener Declarations
-	private final TestPluginPlayerListener playerListener = new TestPluginPlayerListener(this); 
+	private final PlayerStatsPlayerListener playerListener = new PlayerStatsPlayerListener(this); 
 	
 	@Override
 	public void onEnable() {
@@ -35,8 +35,8 @@ public final class TestPlugin extends JavaPlugin{
 	// Registers Commands
 	private void registerCommands() {
 		getLogger().info("Command Registration Started.");
-		getCommand("dsetattribute").setExecutor(new TestPluginCommandExecutor(this));
-		getCommand("showcharactersheet").setExecutor(new TestPluginCommandExecutor(this));
+		getCommand("dsetattribute").setExecutor(new PlayerStatsCommandExecutor(this));
+		getCommand("showcharactersheet").setExecutor(new PlayerStatsCommandExecutor(this));
 		getLogger().info("Command Registration Finished.");
 	}
 	

@@ -1,4 +1,4 @@
-package io.github.sol9109.testplugin;
+package io.github.sol9109.playerstats;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -7,11 +7,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
-public class TestPluginCommandExecutor implements CommandExecutor {
+public class PlayerStatsCommandExecutor implements CommandExecutor {
 
-	private final TestPlugin plugin;
+	private final PlayerStats plugin;
 	
-	public TestPluginCommandExecutor(TestPlugin plugin) { this.plugin = plugin; }
+	public PlayerStatsCommandExecutor(PlayerStats plugin) { this.plugin = plugin; }
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

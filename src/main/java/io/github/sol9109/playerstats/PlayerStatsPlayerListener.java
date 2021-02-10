@@ -1,4 +1,4 @@
-package io.github.sol9109.testplugin;
+package io.github.sol9109.playerstats;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +13,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
-public class TestPluginPlayerListener implements Listener {
+public class PlayerStatsPlayerListener implements Listener {
 
-	private final TestPlugin plugin;
-	public TestPluginPlayerListener(TestPlugin plugin) { this.plugin = plugin; }
+	private final PlayerStats plugin;
+	public PlayerStatsPlayerListener(PlayerStats plugin) { this.plugin = plugin; }
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
