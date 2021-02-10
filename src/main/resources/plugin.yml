@@ -1,0 +1,11 @@
+name: TestPlugin
+main: io.github.sol9109.testplugin.TestPlugin
+version: {$VersionNumber}
+author: Sol9109
+commands:
+  dsetattribute:
+    description: This commands can be used to adjust a player's attributes.
+    usage: /dsetattribute [Player] [Attribute] [Value]
+  showcharactersheet:
+    description: This commands can be used to show a player's character sheet.
+    usage: /showcharactersheet [Player]
