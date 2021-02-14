@@ -3,9 +3,12 @@ main: io.github.sol9109.playerstats.PlayerStats
 version: {$VersionNumber}
 author: Sol9109
 commands:
-  dsetattribute:
-    description: This commands can be used to adjust a player's attributes.
-    usage: /dsetattribute [Player] [Attribute] [Value]
-  showcharactersheet:
-    description: This commands can be used to show a player's character sheet.
-    usage: /showcharactersheet [Player]
+  resetstats:
+    description: Resets the stats of the specified player.
+    usage: /resetstats [Player]
+  changestats:
+    description: Changes the stats of the specified player.
+    usage: /changestats [Player] [CombatClass] [Level] [Experience] [Money] [Str] [Dex]
+  showstats:
+    description: Displays stats of player.
+    usage: /showstats

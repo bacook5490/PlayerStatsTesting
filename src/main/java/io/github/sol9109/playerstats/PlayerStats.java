@@ -1,7 +1,6 @@
 package io.github.sol9109.playerstats;
 
 import java.io.File;
-import java.util.ArrayList;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,10 +10,14 @@ public final class PlayerStats extends JavaPlugin{
 	// Listener Declarations
 	private final PlayerStatsPlayerListener playerListener = new PlayerStatsPlayerListener(this); 
 	
+	// Filename Declarations
+	public final String configDB = "config.yml";
+	public final String playerDB = "players.yml";
+	
 	@Override
 	public void onEnable() {
-		createConfigFile("config.yml");
-		createConfigFile("players.yml");
+		createConfigFile(configDB);
+		createConfigFile(playerDB);
 		registerEvents();
 		registerCommands();
 	}
@@ -22,6 +25,7 @@ public final class PlayerStats extends JavaPlugin{
 	@Override
     public void onDisable() {
 		// TODO save player data on shutdown
+		// TODO save player data at intervals
     }
 	
 	// Registers Events
@@ -35,8 +39,9 @@ public final class PlayerStats extends JavaPlugin{
 	// Registers Commands
 	private void registerCommands() {
 		getLogger().info("Command Registration Started.");
-		getCommand("dsetattribute").setExecutor(new PlayerStatsCommandExecutor(this));
-		getCommand("showcharactersheet").setExecutor(new PlayerStatsCommandExecutor(this));
+		getCommand("resetstats").setExecutor(new PlayerStatsCommandExecutor(this));
+		getCommand("changestats").setExecutor(new PlayerStatsCommandExecutor(this));
+		getCommand("showstats").setExecutor(new PlayerStatsCommandExecutor(this));
 		getLogger().info("Command Registration Finished.");
 	}
 	
@@ -44,25 +49,8 @@ public final class PlayerStats extends JavaPlugin{
 	private void createConfigFile(String filename) {
 		File file = new File(getDataFolder(), filename);
 		if (!file.exists()) {
-			getLogger().info("Creating " + filename + ".");
+			getLogger().info("Creating " + filename);
 			YamlConfiguration.loadConfiguration(file);
-		} else { 
-			getLogger().info(filename + " found."); 
 		}
-	}
-
-	// Returns a list of all attributes that the player has
-	public ArrayList<String> getAttributes() {
-		ArrayList<String> list = new ArrayList<>();
-		list.add("level");
-		list.add("exp");
-		list.add("money");
-		list.add("str");
-		list.add("dex");
-		list.add("int");
-		list.add("wis");
-		list.add("cha");
-		list.add("def");
-		return list;
 	}
 }
