@@ -30,7 +30,7 @@ public class PlayerStatsPlayerListener implements Listener {
 		PlayerData playerData = new PlayerData();
 		Map<String, Object> map = null;
 		try { map = fileConfig.getConfigurationSection(player.getUniqueId().toString()).getValues(false); } catch (Exception e) { }
-		playerData.setMap(map);
+		MappingTools.setMap(playerData, map);
 		plugin.getLogger().info(player.getUniqueId() + "\n" + playerData.toString());
 		
 		// Places player's stored data into player metadata
@@ -46,15 +46,15 @@ public class PlayerStatsPlayerListener implements Listener {
 		
 		// Retrieves player meta data and stores it into PlayerData object
 		PlayerData playerData = new PlayerData();
-		Map<String, Object> map = playerData.getMap();
+		Map<String, Object> map = MappingTools.getMap(playerData);
 		for (String key : map.keySet()) {
 			List<MetadataValue> values = player.getMetadata(key);
 			if (!values.isEmpty()) map.put(key, values.get(0).value());
 		}
-		playerData.setMap(map);
+		MappingTools.setMap(playerData, map);
 		
 		// Write player meta data to the players yml file
-		try { fileConfig.createSection(player.getUniqueId().toString(), playerData.getMap()); } catch (Exception e) {
+		try { fileConfig.createSection(player.getUniqueId().toString(), MappingTools.getMap(playerData)); } catch (Exception e) {
 			plugin.getLogger().log(Level.SEVERE, "Failed to save player data for uuid: " + player.getUniqueId());
 		}
 		

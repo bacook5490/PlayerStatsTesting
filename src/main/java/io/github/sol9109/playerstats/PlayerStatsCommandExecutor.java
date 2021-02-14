@@ -39,7 +39,7 @@ public class PlayerStatsCommandExecutor implements CommandExecutor {
 				
 				FileConfiguration fileConfig = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), plugin.playerDB));
 				PlayerData playerData = new PlayerData();
-				Map<String, Object> map = playerData.getMap();
+				Map<String, Object> map = MappingTools.getMap(playerData);
 				
 				// Places player's stored data into player metadata
 				for (String key : map.keySet()) { 
@@ -47,7 +47,7 @@ public class PlayerStatsCommandExecutor implements CommandExecutor {
 				}
 				
 				// Write player meta data to the players yml file
-				try { fileConfig.createSection(player.getUniqueId().toString(), playerData.getMap()); } catch (Exception e) {
+				try { fileConfig.createSection(player.getUniqueId().toString(), MappingTools.getMap(playerData)); } catch (Exception e) {
 					plugin.getLogger().log(Level.SEVERE, "Failed to save player data for uuid: " + player.getUniqueId());
 					return false;
 				}
@@ -78,12 +78,12 @@ public class PlayerStatsCommandExecutor implements CommandExecutor {
 				// Retrieves player meta data and stores it into PlayerData object
 				FileConfiguration fileConfig = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), plugin.playerDB));
 				PlayerData playerData = new PlayerData();
-				Map<String, Object> map = playerData.getMap();
+				Map<String, Object> map = MappingTools.getMap(playerData);
 				for (String key : map.keySet()) {
 					List<MetadataValue> values = player.getMetadata(key);
 					if (!values.isEmpty()) map.put(key, values.get(0).value());
 				}
-				playerData.setMap(map);
+				MappingTools.setMap(playerData, map);
 				
 				playerData.setCombatClass(args[1]);
 				playerData.setLevel(Integer.parseInt(args[2]));
@@ -92,7 +92,7 @@ public class PlayerStatsCommandExecutor implements CommandExecutor {
 				playerData.setStr(Integer.parseInt(args[5]));
 				playerData.setDex(Integer.parseInt(args[6]));
 				
-				map = playerData.getMap();
+				map = MappingTools.getMap(playerData);
 				
 				// Places player's stored data into player metadata
 				for (String key : map.keySet()) { 
@@ -100,7 +100,7 @@ public class PlayerStatsCommandExecutor implements CommandExecutor {
 				}
 				
 				// Write player meta data to the players yml file
-				try { fileConfig.createSection(player.getUniqueId().toString(), playerData.getMap()); } catch (Exception e) {
+				try { fileConfig.createSection(player.getUniqueId().toString(), MappingTools.getMap(playerData)); } catch (Exception e) {
 					plugin.getLogger().log(Level.SEVERE, "Failed to save player data for uuid: " + player.getUniqueId());
 					return false;
 				}
@@ -122,12 +122,12 @@ public class PlayerStatsCommandExecutor implements CommandExecutor {
 				// Retrieves player meta data and stores it into PlayerData object
 				Player player = (Player)sender;
 				PlayerData playerData = new PlayerData();
-				Map<String, Object> map = playerData.getMap();
+				Map<String, Object> map = MappingTools.getMap(playerData);
 				for (String key : map.keySet()) {
 					List<MetadataValue> values = player.getMetadata(key);
 					if (!values.isEmpty()) map.put(key, values.get(0).value());
 				}
-				playerData.setMap(map);
+				MappingTools.setMap(playerData, map);
 				
 				sender.sendMessage(player.getDisplayName() + "\n" + playerData.toString());
 				return true;
