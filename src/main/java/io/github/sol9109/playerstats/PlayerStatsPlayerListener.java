@@ -1,11 +1,9 @@
 package io.github.sol9109.playerstats;
 
 import java.io.File;
-import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -26,16 +24,13 @@ public class PlayerStatsPlayerListener implements Listener {
 		FileConfiguration fileConfig = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), plugin.playerDB));
 		Player player = (Player)event.getPlayer();
 		
-		// Attempts to read the player's stored data and place it into a PlayerData object
-		PlayerData playerData = new PlayerData();
-		Map<String, Object> map = null;
-		try { map = fileConfig.getConfigurationSection(player.getUniqueId().toString()).getValues(false); } catch (Exception e) { }
-		MappingTools.setMap(playerData, map);
+		PlayerData playerData = MappingTools.mapFromFile(player.getUniqueId().toString(), new PlayerData(), fileConfig);
 		plugin.getLogger().info(player.getUniqueId() + "\n" + playerData.toString());
 		
 		// Places player's stored data into player metadata
-		for (String key : map.keySet()) { 
-			player.setMetadata(key, new FixedMetadataValue(plugin, map.get(key))); 
+		Map<String, Object> map = MappingTools.mapFromObject(playerData);
+		for (Field field : playerData.getClass().getDeclaredFields()) {
+			player.setMetadata(field.getName(), new FixedMetadataValue(plugin, map.get(field.getName())));
 		}
 	}
 	
@@ -46,21 +41,14 @@ public class PlayerStatsPlayerListener implements Listener {
 		
 		// Retrieves player meta data and stores it into PlayerData object
 		PlayerData playerData = new PlayerData();
-		Map<String, Object> map = MappingTools.getMap(playerData);
+		Map<String, Object> map = MappingTools.mapFromObject(playerData);
 		for (String key : map.keySet()) {
 			List<MetadataValue> values = player.getMetadata(key);
 			if (!values.isEmpty()) map.put(key, values.get(0).value());
 		}
-		MappingTools.setMap(playerData, map);
+		playerData = MappingTools.mapToObject(playerData, map);
 		
-		// Write player meta data to the players yml file
-		try { fileConfig.createSection(player.getUniqueId().toString(), MappingTools.getMap(playerData)); } catch (Exception e) {
-			plugin.getLogger().log(Level.SEVERE, "Failed to save player data for uuid: " + player.getUniqueId());
-		}
-		
-		// Save changes made to the players yml file
-		try { fileConfig.save(new File(plugin.getDataFolder(), plugin.playerDB)); } catch (IOException e) {
-			plugin.getLogger().log(Level.SEVERE, "Failed to save file " + plugin.playerDB);
-		}
+		YMLTools.WriteData(player.getUniqueId().toString(), playerData, fileConfig, plugin);
+		YMLTools.SaveData(plugin.playerDB, fileConfig, plugin);
 	}
 }
